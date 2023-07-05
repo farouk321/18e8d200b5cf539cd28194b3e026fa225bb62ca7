@@ -1,6 +1,6 @@
 //-----------------Login-----------------//
 function Login(){
-	if (this.LOGIN) return new Promise.resolve(this.LOGIN);
+	if (this.LOGIN) return Promise.resolve(this.LOGIN);
 	var A={};
 	this.LOGIN=A;
 	return new Promise(r=>{
