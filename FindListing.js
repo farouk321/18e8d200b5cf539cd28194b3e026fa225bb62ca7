@@ -10,11 +10,12 @@
 */
 
 //-----------------FindListing-----------------//
-function FindListing(call,O={}){
-	Load()
+async function FindListing(call,O={}){
+	await Login()
+	groupBy()
 	let status=O.status||["TRANSLATING", "REVIEW", "PUBLISHING", "DELETING","DRAFT","PUBLISHED","TIMED_OUT","PROPAGATED"],
 		mks=O.mks||null,
-		user=User2,
+		user=LOGIN.U2,
 		hitLimit=O.hitLimit||2000,
 		details=O.details||null,
 	productTypes=O.productTypes||null;
