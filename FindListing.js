@@ -11,7 +11,7 @@
 
 //-----------------FindListing-----------------//
 function FindListing(call,O={}){
-	Load()
+	groupBy()
 	let status=O.status||["TRANSLATING", "REVIEW", "PUBLISHING", "DELETING","DRAFT","PUBLISHED","TIMED_OUT","PROPAGATED"],
 		mks=O.mks||null,
 		user=User2,
