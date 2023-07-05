@@ -12,4 +12,4 @@ require=({
 			deps: ["RXhrJSON","GetSales","Login","groupBy","Sleep"],
 		}
 	}
-}); 
+});
