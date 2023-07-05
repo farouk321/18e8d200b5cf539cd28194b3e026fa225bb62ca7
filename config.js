@@ -15,5 +15,6 @@ require=({
 			deps: ["groupBy"],
 			deps: ["Sleep"],
 		}
-	}
+	},
+	baseUrl: "https://cdn.jsdelivr.net/gh/farouk321/18e8d200b5cf539cd28194b3e026fa225bb62ca7/"
 });
