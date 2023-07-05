@@ -1,4 +1,4 @@
-require=({
+require.config({
 	paths: {
 	 "FindListing": "./FindListing",
 	 "RXhrJSON": "./RXhrJSON",
