@@ -1,4 +1,4 @@
-requirejs.config({
+require=({
 	paths: {
 	 "FindListing": "./FindListing",
 	},
