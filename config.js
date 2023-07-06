@@ -1,6 +1,7 @@
 require.config({
 	paths: {
 	 "FindListing": "./FindListing",
+	 "LoadPrice": "./LoadPrice",
 	 "RXhrJSON": "./RXhrJSON",
 	 "GetSales": "./GetSales",
 	 "Login": "./Login",
@@ -10,6 +11,12 @@ require.config({
 	shim: {
 		"FindListing": {
 			deps: ["RXhrJSON","GetSales","Login","groupBy","Sleep"],
-		}
+		},
+		"LoadPrice": {
+			deps: ["GetSales"],
+		},
+		"GetSales": {
+			deps: ["RXhrJSON"],
+		},
 	}
 });
