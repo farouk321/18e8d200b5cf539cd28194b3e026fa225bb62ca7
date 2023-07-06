@@ -1,18 +1,6 @@
-/*	FindListing(
-    (e)=>{
-	console.log(e)
-    },
-    {hitLimit:-1,
-     details:'course',
-     mks:['US'],
-     productTypes:['STANDARD_TSHIRT']
-    });
-*/
-
 //-----------------FindListing-----------------//
 async function FindListing(call,O={}){
 	await Login()
-	groupBy()
 	let status=O.status||["TRANSLATING", "REVIEW", "PUBLISHING", "DELETING","DRAFT","PUBLISHED","TIMED_OUT","PROPAGATED"],
 		mks=O.mks||null,
 		user=LOGIN.U2,
