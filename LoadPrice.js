@@ -1,4 +1,4 @@
-	//-----------------Price-----------------//
+	//-----------------Pffrice-----------------//
 	async function LoadPrice(){
 		await GetS(365);
 		return (this.LoadPriceU)||(this.LoadPriceU=new LoadN());
