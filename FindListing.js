@@ -57,7 +57,7 @@ async function FindListing(call,O={}){
 			.groupBy(e=>ResultAsin[e][0].productType,0)
 			.groupBy(e=>ResultAsin[e][0].marketplace,1)
 			.groupBy(e=>Des[ResultAsin[e][0].designId]??'Default',2);
-		GetS(Sales,365).then(Sl=>{
+		GetS(365).then(Sl=>{
 			Rt[3]=Rt[3].dig(2,(o)=>{A=[];for (let i in o){B=[];for (let asin of o[i]) B.push([asin,Sl[asin]??0]);A.push([i,B]);}return A;})
 			LoopEnded(Rt);
 					if (call) call(Rt);
