@@ -1,6 +1,13 @@
 //-----------------GetSales-----------------//
-function GetS(S,d=30,c=null,st=0,C=0,N=Date.now()){
-	if (S[d]) return new Promise((r)=>{r(S[d])});
+function GetS(d=30,c=null,st=0,C=0,N=Date.now()){
+	if (!this.S) this.S={};
+	let S=this.S;
+	if (S[d]) return new Promise((r)=>{r(S[d])}).then(
+		(e)=>{
+			C=Object.values(S[d]).reduce((g,e)=>{g+=e;return g;},0);
+			c&&c(e);
+			return e;
+		});
 	S[d]={};
 	return Sales(S[d],d,c,st,C,N);
 	function Sales(v,d=30,c=null,st=0,C=0,N=Date.now()){
@@ -30,7 +37,7 @@ function GetS(S,d=30,c=null,st=0,C=0,N=Date.now()){
 				return Sales(v,d,c,st+dd,C,N);
 			}else{
 				console.log("Sold:"+C+", "+(st+dd)+"/"+(d+dd+st));
-				c&&c();
+				c&&c(v);
 			}
 			return v;
 		});
