@@ -1,5 +1,6 @@
 	//-----------------Pffrice-----------------//
 	async function LoadPrice(){
+		await Login();
 		await GetS(365);
 		return (this.LoadPriceU)||(this.LoadPriceU=new LoadN());
 		function LoadN(){
