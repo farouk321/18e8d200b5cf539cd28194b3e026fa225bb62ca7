@@ -14,6 +14,8 @@ function Login(){
 				let U2 = text.match(/accountId":"([^"]+)"/)[1];
 				A.U=U;
 				A.U2=U2;
+				console.log("User:" + U);
+				console.log("Id:" + U2);
 				r(A)
 			}
 		};
