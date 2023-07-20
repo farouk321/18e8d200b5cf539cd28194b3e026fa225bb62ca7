@@ -39,6 +39,7 @@ async function FindListing(call,O={}){
 				st++;
 				Result.push(...List.results.filter(e=>e.asin));
 				hitLimit-=pageSize;
+				console.log("Listing: "+st+"/"+(hitLimit>O.hitCount?O.hitCount:hitLimit));
 				if (O.hitCount-st*pageSize>0&&hitLimit!=0){return ListLoop(0,LoopEnded)};
 		let Rt=[],ResultDesign=Result.groupBy(e=>e.designId);
 		Rt[0]=Result;
