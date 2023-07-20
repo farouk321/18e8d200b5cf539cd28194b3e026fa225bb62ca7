@@ -14,7 +14,7 @@ require.config({
 			deps: ["RXhrJSON","Login","groupBy","Sleep"],
 		},
 		"FindListing": {
-			deps: ["RXhrJSON","GetSales","Login","groupBy","Sleep","FindDesign"],
+			deps: ["RXhrJSON","GetSales","Login","groupBy","Sleep"],
 		},
 		"LoadPrice": {
 			deps: ["GetSales"],
