@@ -10,6 +10,7 @@ async function FindListing(call,O={}){
 		return Startr(call,status,mks,user,hitLimit,details,productTypes)
     
 	async function Startr(call,s,m,u,h,d,p) {
+		let Pages=0;
 		let hitLimit=h;
 		let pageSize=500;
 		let List={},st=0;
@@ -35,11 +36,12 @@ async function FindListing(call,O={}){
 			RXhrJSON("POST",url,JSON.stringify(Pt),ListProccess);
 
 			function ListProccess(O){
+				if (!Pages) Pages=Math.ceil((hitLimit>O.hitCount?O.hitCount:hitLimit)/pageSize);
 				List = O;
 				st++;
 				Result.push(...List.results.filter(e=>e.asin));
 				hitLimit-=pageSize;
-				console.log("Listing: "+st+"/"+(hitLimit>O.hitCount?O.hitCount:hitLimit));
+				console.log("Listing: "+st+"/"+Pages);
 				if (O.hitCount-st*pageSize>0&&hitLimit!=0){return ListLoop(0,LoopEnded)};
 		let Rt=[],ResultDesign=Result.groupBy(e=>e.designId);
 		Rt[0]=Result;
