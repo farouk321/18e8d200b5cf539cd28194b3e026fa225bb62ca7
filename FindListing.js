@@ -36,7 +36,8 @@ async function FindListing(call,O={}){
 			RXhrJSON("POST",url,JSON.stringify(Pt),ListProccess);
 
 			function ListProccess(O){
-				if (!Pages) Pages=Math.ceil((hitLimit>O.hitCount?O.hitCount:hitLimit)/pageSize);
+				if (hitLimit<0) hitLimit=O.hitCount;
+				if (!Pages) Pages=Math.ceil(hitLimit/pageSize)||0;
 				List = O;
 				st++;
 				Result.push(...List.results.filter(e=>e.asin));
