@@ -41,21 +41,31 @@ async function LoadPrice(){
 		marplace.T=Object.keys(marplace);
 		this.mc = mc
 		this.GetPrice = GetPrice;
+		this.AlgoPriceA = AlgoPriceA;
+		this.DefPriceA = DefPriceA;
 		this.GP = GP;
-
+		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
+		var AlgoPrice=[['(S[365][asin]||0)<2',0]];
+		
 		function mc(n){
 			if (!marplace.T) marplace.T=Object.keys(marplace);
 			return marplace.T.indexOf(n)+1;
 		}
+		function DefPriceA(d){
+			DefPrice=d;
+		}
+		function AlgoPriceA(t,p){
+			AlgoPrice.push([t,p]);
+		}
+		function PriceAlgo(){
+			var P=DefPrice[market];
+			for (var al of AlogPrice) if (eval(al[0])) P=al[1];
+			P=Number(P);
+			if (isNaN(P)||P<0) P=0;
+			return P;
+		}
 		function GetPrice(asin,market){
-			var R,P=0;
-			let Mrk={JP:5,ES:3,IT:4,FR:6,DE:6,GB:6,US:6}
-			Mrk={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5}
-			P+=Mrk[market]||4;
-			if ((S[365][asin]||0)<2) P=0;
-			if (P<0) P=0;
-			R=GP(P);
-			return R;
+			return GP(PriceAlgo(asin,market));
 		}
 		function F(n,i=1){return Math.floor(n*i)/i;}
 		function R(n,i=1){return Math.round(n*i)/i;}
