@@ -57,7 +57,7 @@ async function LoadPrice(){
 		function AlgoPriceA(t,p){
 			AlgoPrice.push([t,p]);
 		}
-		function PriceAlgo(){
+		function PriceAlgo(asin,market){
 			var P=DefPrice[market];
 			for (var al of AlogPrice) if (eval(al[0])) P=al[1];
 			P=Number(P);
