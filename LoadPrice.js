@@ -45,7 +45,7 @@ async function LoadPrice(){
 		this.DefPriceA = DefPriceA;
 		this.GP = GP;
 		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
-		var AlgoPrice=[['(S[365][asin]||0)<2',0]];
+		var AlgoPrice=[];
 		
 		function mc(n){
 			if (!marplace.T) marplace.T=Object.keys(marplace);
