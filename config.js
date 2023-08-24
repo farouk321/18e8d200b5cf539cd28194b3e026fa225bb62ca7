@@ -24,4 +24,3 @@ requirejs.config({
 		},
 	}
 });
-define("groupBy",["groupByjs"],function(){groupBy()})
