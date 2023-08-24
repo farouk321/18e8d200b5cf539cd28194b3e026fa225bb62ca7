@@ -6,7 +6,7 @@ requirejs.config({
 	 "RXhrJSON": "./RXhrJSON",
 	 "GetSales": "./GetSales",
 	 "Login": "./Login",
-	 "groupBy": "./groupBy",
+	 "groupByjs": "./groupBy",
 	 "Sleep": "./Sleep",
 	},
 	shim: {
@@ -24,3 +24,4 @@ requirejs.config({
 		},
 	}
 });
+define("groupBy",["groupByjs"],function(){groupBy()})
