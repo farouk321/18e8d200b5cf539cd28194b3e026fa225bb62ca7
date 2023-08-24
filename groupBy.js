@@ -1,5 +1,4 @@
 //-----------------groupBy-----------------//
-groupBy()
 function groupBy(){
 	if (this.IsLOAD) return;
 	this.IsLOAD=1;
