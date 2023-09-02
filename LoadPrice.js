@@ -112,7 +112,6 @@ async function LoadPrice(){
 			let min=PriceMin[a][b];
 			if (!zero||!div) return 0;
 			r=(1+Mk[1])*(zero+Mk[2]*p*div);
-			if (Prsi(r)<min) r=min;
 			return Prsi(r);
 			function Prsi(r){
 				if (M=="JP"){
@@ -122,6 +121,9 @@ async function LoadPrice(){
 					r=R(r,100);
 					r=R(F(F(r-des-0.01,100),1)+Mk[2]+des+(!p?Mk[2]:0),100);
 				}
+				if (Prsi(r)<min) return Prsi(min);
+				if (Prsi(r)<max) return Prsi(max-(M=="JP"?100:1));
+				return r;
 			}
 		}
 		function GP(p){
