@@ -132,22 +132,22 @@ async function LoadPrice(){
 			function Prc(u){
 				var JC=0,Id,G=0,FT=0,To=0;
 				if (!marplace.T) marplace.T=Object.keys(marplace);
-				if (!marplace.P) marplace.P=Object.keys(PriceMin);
+				if (!marplace.P) marplace.P=Object.keys(PriceZero);
 				//--------------------------------------------
-				Price[u]=JSON.parse(JSON.stringify(PriceMin));
+				Price[u]=JSON.parse(JSON.stringify(PriceZero));
 				for (var JC=0;JC<marplace.P.length;JC++){
 					Id=marplace.P[JC];
-					To+=PriceMin[Id].length;
+					To+=PriceZero[Id].length;
 					if (JC==marplace.P.length-1) FT=1;
-					for (var i=0;i<PriceMin[Id].length;i++){
+					for (var i=0;i<PriceZero[Id].length;i++){
 						RY(Id,i,u);
 					}
 				}
 				function RY(a,b,u){
-						if (!Price.i) PriceMin[a][b]=R(PriceMin[a][b]/(1+marplace[marplace.T[b]][1]),100);
-						Price[u][a][b]=Ry(a,b,u);
-						G+=1;
-						if (G==To&&FT) console.log("Price:"+u+", "+G+"/"+To);
+					if (!Price.i) PriceZero[a][b]=R(PriceZero[a][b]/(1+marplace[marplace.T[b]][1]),100);
+					Price[u][a][b]=Ry(a,b,u);
+					G+=1;
+					if (G==To&&FT) console.log("Price:"+u+", "+G+"/"+To);
 				}
 			}
 			return Price[p];
