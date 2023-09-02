@@ -22,7 +22,7 @@ async function LoadPrice(){
 			 POP_SOCKET: [7.142, 8.571, 8.5, 8.571, 8.714, 8.642, 0], 
 			 TANK_TOP: [1.311, 1.584, 1.654, 1.482, 1.51, 1.547, 0]
 		},
-		PriceMin = {
+		PriceZero = {
 			 PHONE_CASE_APPLE_IPHONE: [13.83, 0, 0, 0, 0, 0, 1617.04], 
 			 PHONE_CASE_SAMSUNG_GALAXY: [13.83, 0, 0, 0, 0, 0, 1617.04], 
 			 RAGLAN: [18.76, 14.62, 15.96, 16.86, 16.88, 16.74, 0], 
@@ -37,6 +37,38 @@ async function LoadPrice(){
 			 PREMIUM_TSHIRT: [15.06, 0, 0, 0, 0, 0, 0], 
 			 POP_SOCKET: [0, 0.02, -0.01, 0.02, -0.02, 0.03, 0], 
 			 TANK_TOP: [15.27, 13.38, 14.25, 13.86, 13.86, 13.7, 0]
+		},
+		PriceMax = {
+			 PHONE_CASE_APPLE_IPHONE: [30, 0, 0, 0, 0, 0, 6500], 
+			 PHONE_CASE_SAMSUNG_GALAXY: [30, 0, 0, 0, 0, 0, 6500], 
+			 RAGLAN: [45, 30, 35, 35, 35, 35, 0], 
+			 ZIP_HOODIE: [60, 45, 50, 50, 50, 50, 8000], 
+			 STANDARD_SWEATSHIRT: [60, 45, 50, 50, 50, 50, 8000], 
+			 TOTE_BAG: [25, 0, 0, 0, 0, 0, 0], 
+			 STANDARD_TSHIRT: [35, 30, 30, 30, 30, 30, 6500], 
+			 STANDARD_LONG_SLEEVE: [40, 35, 35, 40, 40, 40, 6500], 
+			 VNECK: [35, 35, 35, 35, 35, 35, 0], 
+			 THROW_PILLOW: [45, 0, 0, 0, 0, 0, 0], 
+			 STANDARD_PULLOVER_HOODIE: [60, 45, 50, 50, 50, 50, 8000], 
+			 PREMIUM_TSHIRT: [45, 0, 0, 0, 0, 0, 0], 
+			 POP_SOCKET: [20, 20, 20, 20, 20, 20, 0], 
+			 TANK_TOP: [35, 30, 30, 30, 30, 30, 0]
+		},
+		PriceMin = {
+			 PHONE_CASE_APPLE_IPHONE: [0, 0, 0, 0, 0, 0, 0], 
+			 PHONE_CASE_SAMSUNG_GALAXY: [0, 0, 0, 0, 0, 0, 0], 
+			 RAGLAN: [0, 0, 0, 0, 0, 0, 0], 
+			 ZIP_HOODIE: [0, 0, 0, 0, 0, 0, 0], 
+			 STANDARD_SWEATSHIRT: [0, 0, 0, 0, 0, 0, 0], 
+			 TOTE_BAG: [0, 0, 0, 0, 0, 0, 0], 
+			 STANDARD_TSHIRT: [0, 0, 0, 0, 0, 0, 0], 
+			 STANDARD_LONG_SLEEVE: [0, 0, 0, 0, 0, 0, 0], 
+			 VNECK: [0, 0, 0, 0, 0, 0, 0], 
+			 THROW_PILLOW: [0, 0, 0, 0, 0, 0, 0], 
+			 STANDARD_PULLOVER_HOODIE: [0, 0, 0, 0, 0, 0, 0], 
+			 PREMIUM_TSHIRT: [0, 0, 0, 0, 0, 0, 0], 
+			 POP_SOCKET: [11.72, 9.68, 10.34, 12.29, 12.28, 11.86, 0], 
+			 TANK_TOP: [0, 0, 0, 0, 0, 0, 0]
 		},des=.99,desJP=00,
 		marplace={"US":["USD",0,1],"GB":["GBP",.2,1],"DE":["EUR",.19,1],"FR":["EUR",.2,1],"IT":["EUR",.22,1],"ES":["EUR",.21,1],"JP":["JPY", .1,200]};
 		marplace.T=Object.keys(marplace);
@@ -74,18 +106,23 @@ async function LoadPrice(){
 			var r;
 			let M=marplace.T[b];
 			let Mk=marplace[M];
-		let min=PriceMin[a][b];
-		let div=PriceDiv[a][b];
-		if (!min||!div) return 0;
-			r=(1+Mk[1])*(min+Mk[2]*p*div);
-			if (M=="JP"){
-				r=R(r,1e-2);
-				r=R(F(F(r-desJP-1,1),1e-2)+Mk[2]+desJP+(!p?Mk[2]:0),1);
-			}else{
-				r=R(r,100);
-				r=R(F(F(r-des-0.01,100),1)+Mk[2]+des+(!p?Mk[2]:0),100);
+			let div=PriceDiv[a][b];
+			let zero=PriceZero[a][b];
+			let max=PriceMax[a][b];
+			let min=PriceMin[a][b];
+			if (!zero||!div) return 0;
+			r=(1+Mk[1])*(zero+Mk[2]*p*div);
+			if (Prsi(r)<min) r=min;
+			return Prsi(r);
+			function Prsi(r){
+				if (M=="JP"){
+					r=R(r,1e-2);
+					r=R(F(F(r-desJP-1,1),1e-2)+Mk[2]+desJP+(!p?Mk[2]:0),1);
+				}else{
+					r=R(r,100);
+					r=R(F(F(r-des-0.01,100),1)+Mk[2]+des+(!p?Mk[2]:0),100);
+				}
 			}
-			return r;
 		}
 		function GP(p){
 			if (Price[p]==undefined){
