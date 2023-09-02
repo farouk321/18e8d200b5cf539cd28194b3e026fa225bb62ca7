@@ -110,7 +110,7 @@ async function LoadPrice(){
 			let zero=PriceZero[a][b];
 			let max=PriceMax[a][b];
 			let min=PriceMin[a][b];
-			if (!zero||!div) return 0;
+			if (!div) return 0;
 			r=(1+Mk[1])*(zero+Mk[2]*p*div);
 			return Prsi(r);
 			function Prsi(r){
