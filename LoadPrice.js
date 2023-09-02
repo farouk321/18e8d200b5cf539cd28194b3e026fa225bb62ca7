@@ -121,8 +121,8 @@ async function LoadPrice(){
 					r=R(r,100);
 					r=R(F(F(r-des-0.01,100),1)+Mk[2]+des+(!p?Mk[2]:0),100);
 				}
-				if (Prsi(r)<min) return Prsi(min);
-				if (Prsi(r)>max) return Prsi(max-(M=="JP"?100:1));
+				if (r<min) return Prsi(min);
+				if (r>max) return Prsi(max-(M=="JP"?100:1));
 				return r;
 			}
 		}
