@@ -3,6 +3,6 @@
     "description": "Cloudstream Eddy Plugin Repository",
     "manifestVersion": 1,
     "pluginLists": [
-      "https://raw.githubusercontent.com/Eddy976/cloudstream-extensions-eddy/builds/plugins.json"
+      "https://codeberg.org/cloudstream/cloudstream-extensions-eddy/raw/branch/builds/plugins.json"
     ]
 }
