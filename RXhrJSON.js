@@ -2,10 +2,10 @@
 function RXhrJSONP(method, url, post, Rc = 5) {
 return new Promise((call, fail) => { RXhrJSON(method, url, post, call, Rc, fail) });
 }
-function RXhrJSON(method, url,post,call,Rc=5,fail=()=>{}){
+function RXhrJSON(method, url,post,call,Rc={count:6,timeout:1e4},fail=()=>{}){
     (function R(){
-	if (Rc==0) return fail();
-	Rc--;
+	if (Rc.count==0) return fail();
+	Rc.count--;
 	let http = new XMLHttpRequest();
 	http.open(method, url, true);
 	http.setRequestHeader('Content-Type', 'text/plain');
@@ -20,7 +20,7 @@ function RXhrJSON(method, url,post,call,Rc=5,fail=()=>{}){
 		    }
 		    call(O);
 		}else{
-			await sleep(1000);
+			await sleep(Rc.timeout);
 		    return R();
 		}
 	    }
