@@ -1,5 +1,5 @@
 //-----------------RXhrJSON-----------------//
-function RXhrJSONP(method, url, post, Rc = 5) {
+function RXhrJSONP(method, url, post, Rc = {count:6,timeout:1e4}) {
 return new Promise((call, fail) => { RXhrJSON(method, url, post, call, Rc, fail) });
 }
 function RXhrJSON(method, url,post,call,Rc={count:6,timeout:1e4},fail=()=>{}){
