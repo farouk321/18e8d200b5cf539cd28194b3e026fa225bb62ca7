@@ -7,7 +7,7 @@ requirejs.config({
 	 "RXhrJSON": "./RXhrJSON",
 	 "GetSales": "./GetSales",
 	 "Login": "./Login",
-	 "groupByjs": "./groupBy",
+	 "groupBy": "./groupBy",
 	 "Sleep": "./Sleep",
 	},
 	shim: {
