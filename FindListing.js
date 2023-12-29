@@ -6,14 +6,16 @@ async function FindListing(call,O={}){
 		mks=O.mks||null,
 		user=LOGIN.U2,
 		hitLimit=O.hitLimit||2000,
+		keepNonAsin=O.keepNonAsin||false,
 		details=O.details||null,
 	productTypes=O.productTypes||null;
-		return Startr(call,status,mks,user,hitLimit,details,productTypes)
+		return Startr(call,status,mks,user,hitLimit,details,productTypes,keepNonAsin)
     
-	async function Startr(call,s,m,u,h,d,p) {
+	async function Startr(call,s,m,u,h,d,p,kna) {
 		let Pages=0;
 		let hitLimit=h;
 		let pageSize=500;
+		let keepNonAsin=kna;
 		let List={},st=0;
 		let url = 'https://merch.amazon.com/api/ng-amazon/coral/com.amazon.merch.search.MerchSearchService/FindListings';
 		let Result=[];
@@ -41,7 +43,7 @@ async function FindListing(call,O={}){
 				if (!Pages) Pages=Math.ceil(hitLimit/pageSize)||0;
 				List = O;
 				st++;
-				Result.push(...List.results.filter(e=>e.asin));
+				Result.push(...List.results.filter(e=>keepNonAsin?1:e.asin));
 				hitLimit-=pageSize;
 				console.log("Listing: "+st+"/"+Pages);
 				if (O.hitCount-st*pageSize>0&&hitLimit!=0){return ListLoop(0,LoopEnded)};
