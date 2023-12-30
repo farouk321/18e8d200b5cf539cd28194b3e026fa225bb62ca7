@@ -1,8 +1,7 @@
     //-----------------requireLoad----------------------
     async function Load(nd,fn=((e)=>e)){
         await requireLoad()
-        Login()
-        return prequirejs([,...nd]).then(fn);
+        return prequirejs([,...nd]).then(e=>Login()).then(fn);
         function prequirejs(ar){
             return new Promise((r,f)=>requirejs(ar,r))
         }
