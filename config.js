@@ -33,4 +33,4 @@ requirejs.config({
 		},
 	}
 });
-requirejs(["RXhrJSON","Login","groupBy","Sleep"])
+await (new Promise({r,f}=>requirejs(["RXhrJSON","Login","groupBy","Sleep"],r)))
