@@ -3,6 +3,8 @@ requirejs.config({
 	 "FindDesign": "./FindDesign",
 	 "FindListing": "./FindListing",
 	 "DesignDetails": "./DesignDetails",
+	 "GetDesign": "./GetDesign",
+	 "GeneratePriceObj": "./GeneratePriceObj",
 	 "LoadPrice": "./LoadPrice",
 	 "RXhrJSON": "./RXhrJSON",
 	 "GetSales": "./GetSales",
@@ -15,13 +17,16 @@ requirejs.config({
 			deps: ["RXhrJSON","Login","groupBy","Sleep"],
 		},
 		"FindListing": {
-			deps: ["RXhrJSON","GetSales","Login","groupBy","Sleep"],
+			deps: ["RXhrJSON","Login","GetSales","groupBy","Sleep"],
 		},
-		"DesignDetails": {
+		"GetDesign": {
 			deps: ["RXhrJSON"],
 		},
+		"GeneratePriceObj": {
+			deps: ["RXhrJSON","Login"],
+		},
 		"LoadPrice": {
-			deps: ["GetSales"],
+			deps: ["RXhrJSON","GetSales"],
 		},
 		"GetSales": {
 			deps: ["RXhrJSON"],
