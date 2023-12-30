@@ -3,8 +3,9 @@ function RXhrJSONP(method, url, post, Rc = {count:6,timeout:1e4}) {
 return new Promise((call, fail) => { RXhrJSON(method, url, post, call, Rc, fail) });
 }
 function RXhrJSON(method, url,post,call,Rc={count:6,timeout:1e4},fail=()=>{}){
-    (function R(){
+    (function R(s=0){
 	if (Rc.count==0) return fail();
+	await sleep(s);
 	Rc.count--;
 	let http = new XMLHttpRequest();
 	http.open(method, url, true);
@@ -15,13 +16,11 @@ function RXhrJSON(method, url,post,call,Rc={count:6,timeout:1e4},fail=()=>{}){
 		    try{
 			var O = JSON.parse(http.responseText);
 		    }catch(e){
-			await sleep(1000);
-			return R();
+			return R(1000);
 		    }
 		    call(O);
 		}else{
-			await sleep(Rc.timeout);
-		    return R();
+		    return R(Rc.timeout);
 		}
 	    }
 	}
