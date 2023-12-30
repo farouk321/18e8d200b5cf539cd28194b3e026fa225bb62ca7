@@ -1,10 +1,9 @@
 //-----------------GeneratePriceObj-----------------//
-(function (){
+function GeneratePriceObj(){
 	var S=["Div","Zero","Max","Min"];
 	var User,User2,PriceObj={},Price = {},RoyaltyCache={},
 	marplace={"US":["USD",0],"GB":["GBP",.2],"DE":["EUR",.19],"FR":["EUR",.2],"IT":["EUR",.22],"ES":["EUR",.21], "JP":["JPY", .1]};
-	Load([],Start);
-	
+	Login().then(Start);
 	async function Start({U,U2}) {
 		User = U;
 		User2 = U2;
@@ -70,28 +69,14 @@
 	}
 	
 	async function ProductConfig() {
-		return new Promise(function (resolve, reject) {
-			var xhr = new XMLHttpRequest();
-			var url = 'https://merch.amazon.com/api/ng-amazon/coral/com.amazon.merch.sellerdesignservice.MerchSellerDesignService/GetProductTypeConfiguration';
-			var Pt = {
-				"actingAsId": User,
-				"userId": User,
-				"accountId": User2,
-				"__type": "com.amazon.merch.sellerdesignservice#GetProductTypeConfigurationInput",
-			};
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.onload = async function () {
-				var status = xhr.status;
-				if (status == 200) {
-				resolve(JSON.parse(xhr.responseText).productTypeConfiguration);
-				} else {
-				await sleep(3000);
-				resolve(await ProductConfig());
-				}
-			};
-			xhr.send(JSON.stringify(Pt));
-		});
+		var url = 'https://merch.amazon.com/api/ng-amazon/coral/com.amazon.merch.sellerdesignservice.MerchSellerDesignService/GetProductTypeConfiguration';
+		var post = {
+			"actingAsId": User,
+			"userId": User,
+			"accountId": User2,
+			"__type": "com.amazon.merch.sellerdesignservice#GetProductTypeConfigurationInput",
+		};
+		return RXhrJSONP("POST",url,post,{count:2,timeout:3e3}).then(e=>e.productTypeConfiguration)
 	}
 	
 	function Print(){
@@ -121,53 +106,26 @@
 		.replaceAll(/\n([^{}])/g,"\n\t\t$1").replaceAll(/\n(})/g,"\n\t$1").replaceAll(/\s(\])/g,"$1").replaceAll(/],/g,"], ");
 	}
 	
-	async function Ry(T, P, M, Tr=0) {
+	async function Ry(T, P, M) {
 		var cacheKey=T+P+M
 		if (cacheKey in RoyaltyCache) return RoyaltyCache[cacheKey];
-		return new Promise(function (resolve, reject) {
-			var xhr = new XMLHttpRequest();
-			var url = 'https://merch.amazon.com/api/ng-amazon/royalty/calculateV2';
-			var Pt = {"calculateRoyaltiesRequest":{
-			"marketplace": M,
-			"price": {
-			"amount": Math.floor(100*(P/(1+marplace[M][1])))/100,
-			"currencyCode": marplace[M][0]
-			},
-			"royaltyProductConfig": {
-			"productType": T,
-			"printLocations": ["DEFAULT_SINGLE_PRINT_LOCATION"]
-			}
-			}},r;
-			
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.onload = async function () {
-				if (xhr.readyState == 4) {
-					if (xhr.status == 200) {
-						RoyaltyCache[cacheKey]=parseFloat(xhr.responseText);
-						resolve(RoyaltyCache[cacheKey]);
-					} else {
-						if (Tr==1) return;
-						await sleep(3000);
-						resolve(await Ry(T, P, M, Tr++));
-					}
+		var post = {
+			"calculateRoyaltiesRequest":{
+				"marketplace": M,
+				"price": {
+					"amount": Math.floor(100*(P/(1+marplace[M][1])))/100,
+					"currencyCode": marplace[M][0]
+				},
+				"royaltyProductConfig": {
+					"productType": T,
+					"printLocations": ["DEFAULT_SINGLE_PRINT_LOCATION"]
 				}
-			};
-			xhr.send(JSON.stringify(Pt));
-		});
+			}
+		};
+		return RXhrJSONP("POST","https://merch.amazon.com/api/ng-amazon/royalty/calculateV2",post,{count:2,timeout:3e3})
+			.then(e=>{
+				RoyaltyCache[cacheKey]=e;
+				return e;
+			});
 	}
-	
-	//-----------------requireLoad----------------------
-	async function Load(nd,fn){
-		requireLoad().then(e=>new Promise((r,f)=>requirejs(['Login',...nd],r)).then(e=>Login().then(fn)));
-	}
-	
-	//-----------------requireLoad----------------------
-	async function requireLoad() {
-		let v='latest';
-		if (this.requirejs) return Promise.resolve(0);
-		var branch='https://cdn.jsdelivr.net/gh/farouk321/18e8d200b5cf539cd28194b3e026fa225bb62ca7@'+v;
-		return lS(branch+"/require.js").then(e=>lS(branch+"/config.js").then(e=>{requirejs.config({baseUrl:branch});return requireLoad();}));
-		function lS(src,async=true,type="text/javascript"){return new Promise((resolve,reject)=>{try{const tag=document.createElement("script");const container=document.head||document.body;tag.type=type;tag.async=async;tag.src=src;tag.addEventListener("load",()=>{resolve({loaded:true,error:false});});tag.addEventListener("error",()=>{reject({loaded:false,error:true,message:`Failed to load script with src ${src}`,});});container.appendChild(tag);}catch(error){reject(error);}})};
-	}
-})()
+}
