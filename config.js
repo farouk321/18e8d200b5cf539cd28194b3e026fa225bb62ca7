@@ -31,6 +31,6 @@ requirejs.config({
 		"GetSales": {
 			deps: [],
 		},
-	},
-	deps: ["RXhrJSON","Login","groupBy","Sleep"]
+	}
 });
+requirejs(["RXhrJSON","Login","groupBy","Sleep"])
