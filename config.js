@@ -14,22 +14,23 @@ requirejs.config({
 	},
 	shim: {
 		"FindDesign": {
-			deps: ["RXhrJSON","Login","groupBy","Sleep"],
+			deps: [],
 		},
 		"FindListing": {
-			deps: ["RXhrJSON","Login","GetSales","groupBy","Sleep"],
+			deps: ["GetSales"],
 		},
 		"GetDesign": {
-			deps: ["RXhrJSON"],
+			deps: [],
 		},
 		"GeneratePriceObj": {
-			deps: ["RXhrJSON","Login"],
+			deps: [],
 		},
 		"LoadPrice": {
-			deps: ["RXhrJSON","GetSales"],
+			deps: ["GetSales"],
 		},
 		"GetSales": {
-			deps: ["RXhrJSON"],
+			deps: [],
 		},
-	}
+	},
+	deps: ["RXhrJSON","Login","groupBy","Sleep"]
 });
