@@ -2,16 +2,19 @@
 async function FindListing(call,O={}){
 	groupBy();
 	await Login();
-	let status=O.status||["TRANSLATING", "REVIEW", "PUBLISHING", "DELETING","DRAFT","PUBLISHED","TIMED_OUT","PROPAGATED"],
-		mks=O.mks||null,
+	let status=Def("status",["TRANSLATING", "REVIEW", "PUBLISHING", "DELETING","DRAFT","PUBLISHED","TIMED_OUT","PROPAGATED"]),
+		mks=Def("mks",null),
 		user=LOGIN.U2,
-		hitLimit=O.hitLimit||2000,
-		keepNonAsin=O.keepNonAsin||false,
-		details=O.details||null,
-	productTypes=O.productTypes||null;
-		return Startr(call,status,mks,user,hitLimit,details,productTypes,keepNonAsin)
-    
-	async function Startr(call,s,m,u,h,d,p,kna) {
+		hitLimit=Def("hitLimit",2000),
+		keepNonAsin=Def("keepNonAsin",false),
+		details=Def("details",null),
+		productTypes=Def("productTypes",null),
+		deleteReasonType=Def("deleteReasonType",["", "CONTENT_POLICY_VIOLATION", "INACTIVE_NO_SALES"]);
+		return Startr(call,status,mks,user,hitLimit,details,productTypes,keepNonAsin,deleteReasonType)
+	function Def(t,v){
+		return (t in O?O[t]:v);
+	}
+	async function Startr(call,s,m,u,h,d,p,kna,drt) {
 		let Pages=0;
 		let hitLimit=h;
 		let pageSize=500;
@@ -32,7 +35,7 @@ async function FindListing(call,O={}){
 				"marketplaces": m,
 				"productTypes": p,
 				"searchableOnRetail": null,
-				"deleteReasonType": [""],
+				"deleteReasonType": drt,
 				"accountId": u,
 				"__type": "com.amazon.merch.search#FindListingsRequest"
 			};
