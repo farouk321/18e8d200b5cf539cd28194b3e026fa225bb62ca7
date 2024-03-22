@@ -78,6 +78,7 @@ async function LoadPrice(){
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
 		this.GP = GP;
+		this.history = {};
 		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
 		var AlgoPrice=[];
 		
@@ -96,6 +97,7 @@ async function LoadPrice(){
 			for (var al of AlgoPrice) if (eval(al[0])) P=al[1];
 			P=Number(P);
 			if (isNaN(P)||P<0) P=0;
+			this.history[P]=(this.history[P]||0)+1
 			return P;
 		}
 		function GetPrice(asin,market){
