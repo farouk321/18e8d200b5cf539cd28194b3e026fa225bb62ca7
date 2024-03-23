@@ -73,12 +73,13 @@ async function LoadPrice(){
 		},des=.99,desJP=00,
 		marplace={"US":["USD",0,1],"GB":["GBP",.2,1],"DE":["EUR",.19,1],"FR":["EUR",.2,1],"IT":["EUR",.22,1],"ES":["EUR",.21,1],"JP":["JPY", .1,200]};
 		marplace.T=Object.keys(marplace);
-		this.mc = mc
+		var history = {};
+		this.mc = mc;
 		this.GetPrice = GetPrice;
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
 		this.GP = GP;
-		this.history = {};
+		this.history = history;
 		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
 		var AlgoPrice=[];
 		
@@ -97,7 +98,7 @@ async function LoadPrice(){
 			for (var al of AlgoPrice) if (eval(al[0])) P=al[1];
 			P=Number(P);
 			if (isNaN(P)||P<0) P=0;
-			this.history[P]=(this.history[P]||0)+1
+			history[P]=(history[P]||0)+1
 			return P;
 		}
 		function GetPrice(asin,market){
