@@ -9,7 +9,7 @@ function RXhrJSON(method, url,post,call,Rc={count:6,timeout:1e4},fail=()=>{}){
 		Rc.count--;
 		let http = new XMLHttpRequest();
 		http.open(method, url, true);
-		http.setRequestHeader('Content-Type', 'text/plain');
+		http.setRequestHeader('Content-Type', 'application/json');
 		http.onreadystatechange = async function() {
 		    if (http.readyState == 4) {
 				if (http.status == 200){
