@@ -115,7 +115,7 @@ async function LoadPrice(){
 			let max=PriceObj.Max[a][b];
 			let min=PriceObj.Min[a][b];
 			if (!div) return 0;
-			r=(1+Mk[1])*(zero+Mk[2]*p*div);
+			r=(zero+Mk[2]*p*div);
 			return Prsi(r);
 			function Prsi(r){
 				if (M=="JP"){
@@ -150,7 +150,6 @@ async function LoadPrice(){
 					}
 				}
 				function RY(a,b,u){
-					if (!Price.i) PriceObj.Zero[a][b]=R(PriceObj.Zero[a][b]/(1+marplace[marplace.T[b]][1]),100);
 					Price[u][a][b]=Ry(a,b,u);
 					G+=1;
 					if (G==To&&FT) console.log("Price:"+u+", "+G+"/"+To);
