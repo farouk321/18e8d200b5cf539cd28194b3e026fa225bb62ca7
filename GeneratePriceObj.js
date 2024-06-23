@@ -110,19 +110,18 @@ function GeneratePriceObj(){
 		var cacheKey=T+P+M
 		if (cacheKey in RoyaltyCache) return RoyaltyCache[cacheKey];
 		var post = {
-			"calculateRoyaltiesRequest":{
-				"marketplace": M,
-				"price": {
-					"amount": Math.floor(100*(P/(1+marplace[M][1])))/100,
-					"currencyCode": marplace[M][0]
-				},
-				"royaltyProductConfig": {
-					"productType": T,
-					"printLocations": ["DEFAULT_SINGLE_PRINT_LOCATION"]
-				}
+			"marketplace": M,
+			"price": {
+				"amount": Math.floor(100*(P/(1+marplace[M][1])))/100,
+				"currencyCode": marplace[M][0]
+			},
+			"productType": T,
+			"royaltyProductConfig": {
+				"productType": T,
+				"printLocations": ["DEFAULT_SINGLE_PRINT_LOCATION"]
 			}
 		};
-		return RXhrJSONP("POST","https://merch.amazon.com/api/ng-amazon/royalty/calculateV2",post,{count:2,timeout:3e3})
+		return RXhrJSONP("POST","https://merch.amazon.com/api/ng-amazon/royalty/calculate",post,{count:2,timeout:3e3})
 			.then(e=>{
 				RoyaltyCache[cacheKey]=e;
 				return e;
