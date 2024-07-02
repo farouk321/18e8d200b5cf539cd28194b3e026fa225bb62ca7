@@ -95,7 +95,7 @@ async function LoadPrice(){
 		}
 		function PriceAlgo(asin,market){
 			var P=DefPrice[market];
-			for (var al of AlgoPrice) if (eval(al[0])) P=al[1];
+			for (var al of AlgoPrice) if (eval(al[0])) P=eval(al[1]);
 			P=Number(P);
 			if (isNaN(P)||P<0) P=0;
 			history[P]=(history[P]||0)+1
