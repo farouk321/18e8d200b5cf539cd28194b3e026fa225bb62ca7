@@ -94,7 +94,7 @@ async function LoadPrice(){
 			AlgoPrice.push([t,p]);
 		}
 		function PriceAlgo(asin,market){
-			var P=DefPrice[market];
+			var P=eval(DefPrice[market]);
 			for (var al of AlgoPrice) if (eval(al[0])) P=eval(al[1]);
 			P=Number(P);
 			if (isNaN(P)||P<0) P=0;
