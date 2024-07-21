@@ -9,10 +9,8 @@ function GeneratePriceObj(){
 		User2 = U2;
 		ProductConfig=await ProductConfig();
 		for (let type in ProductConfig){
-			if (type!='STANDARD_TSHIRT') continue;
 			let v=ProductConfig[type];
 			Price[type]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||0});
-			break
 		}
 		Str();
 	}
@@ -52,8 +50,8 @@ function GeneratePriceObj(){
 				ProductConfig[a].maxPrice[mk]||ProductConfig[a].defaultPrices[mk]*2,
 				ProductConfig[a].minPrice[mk]||ProductConfig[a].defaultPrices[mk]
 			      ];
-			p.push((p[0]+p[1])/2);
-			p.map(e=>e*1e3);
+            let split=1;
+			for (let count=0;count<split;count++) p.push((count+1)*(p[0]+p[1])/split);
 			var r=[];
 			var X=0,Y=0,A=0,B=0;
 			for (var i=0;i<p.length;i++){
