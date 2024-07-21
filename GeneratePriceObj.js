@@ -3,14 +3,16 @@ function GeneratePriceObj(){
 	var S=["Div","Zero","Max","Min"];
 	var User,User2,PriceObj={},Price = {},RoyaltyCache={},
 	marplace={"US":["USD",0],"GB":["GBP",.2],"DE":["EUR",.19],"FR":["EUR",.2],"IT":["EUR",.22],"ES":["EUR",.21], "JP":["JPY", .1]};
+	marplace={"DE":["EUR",.19]};
 	Login().then(Start);
 	async function Start({U,U2}) {
 		User = U;
 		User2 = U2;
 		ProductConfig=await ProductConfig();
-		for (var i in ProductConfig){
-			let v=ProductConfig[i];
-			Price[i]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||0});
+		for (let type in ProductConfig){
+			if (type!='STANDARD_TSHIRT') continue;
+			let v=ProductConfig[type];
+			Price[type]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||0});
 			break
 		}
 		Str();
