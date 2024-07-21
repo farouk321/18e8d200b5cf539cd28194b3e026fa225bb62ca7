@@ -37,8 +37,9 @@ function GeneratePriceObj(){
 			Id=marplace.P[JC];
 			To+=Price[Id].filter(function(i){return i;}).length;
 			if (JC==marplace.P.length-1) FT=1;
+			let Last=Promise.resolve()
 			for (let i=0;i<Price[Id].length;i++){
-				if (Price[Id][i]) RY2(Id,i);
+				if (Price[Id][i]) Last.then(RY2.bind(this,Id,i));
 			}
 		}
 	
@@ -61,7 +62,7 @@ function GeneratePriceObj(){
 			PriceObj.Div[a][b]=F(A/B,1e3);
 			PriceObj.Zero[a][b]=F(Y-A/B*X,1e2);
 			PriceObj.Max[a][b]=F(ProductConfig[a].maxPrice[mk]||1e6,1e2);
-			PriceObj.Min[a][b]=F(ProductConfig[a].minPrice[mk]||0,1e2);
+			PriceObj.Min[a][b]=Math.max(F(ProductConfig[a].minPrice[mk]||0,1e2),PriceObj.Zero[a][b]);
 			Fr+=1;
 			if (!(Fr%10)||Fr==To)console.log("Price:"+Fr+"/"+To);
 			if (FT&&Fr==To) (Print());
