@@ -58,7 +58,7 @@ function GeneratePriceObj(){
 			var r=[];
 			var X=0,Y=0,A=0,B=0;
 			for (var i=0;i<p.length;i++){
-				r[i]=[p[i],await Ry(a, p[i], marplace.T[b])]
+				r[i]=[await Ry(a, p[i], marplace.T[b]),p[i]]
 			}
 			var M=Mean(r);
 			PriceObj.Div[a][b]=F(M[0],1e3);
