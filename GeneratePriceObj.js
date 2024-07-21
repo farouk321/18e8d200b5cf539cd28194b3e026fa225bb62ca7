@@ -50,25 +50,39 @@ function GeneratePriceObj(){
 			var ps=0;
 			var mk=marplace.T[b];
 			var p=[ProductConfig[a].maxPrice[mk]||ProductConfig[a].defaultPrices[mk]*2,ProductConfig[a].minPrice[mk]||ProductConfig[a].defaultPrices[mk]];
+			p.map(e=>e*1e3);
 			var r=[];
 			var X=0,Y=0,A=0,B=0;
 			for (var i=0;i<p.length;i++){
-				r[i]=await Ry(a, p[i]*1e3, marplace.T[b])
-				Y+=p[i]*1e3;
-				X+=r[i];
+				r[i]=[p[i],await Ry(a, p[i], marplace.T[b])]
 			}
-			Y/=i;X/=i;
-			for (i=0;i<p.length;i++){
-				A+=(r[i]-X)*(p[i]*1e3-Y);
-				B+=(r[i]-X)**2;
-			}
-			PriceObj.Div[a][b]=F(A/B,1e3);
-			PriceObj.Zero[a][b]=F(Y-A/B*X,1e2);
+			var M=Mean(r);
+			PriceObj.Div[a][b]=F(M[0],1e3);
+			PriceObj.Zero[a][b]=F(M[1],1e2);
 			PriceObj.Max[a][b]=F(ProductConfig[a].maxPrice[mk]||1e6,1e2);
 			PriceObj.Min[a][b]=Math.max(F(ProductConfig[a].minPrice[mk]||0,1e2),PriceObj.Zero[a][b]);
 			Fr+=1;
 			if (!(Fr%10)||Fr==To)console.log("Price:"+Fr+"/"+To);
 			if (FT&&Fr==To) (Print());
+			function Mean(Points,multi=1){
+			  var sumX = 0
+			  var sumY = 0
+			  var sumXY = 0
+			  var sumXSq = 0
+			  var N = Points.length
+			  var m,b;
+			    
+			  for(var i = 0; i < N; ++i) {
+			    sumX += Points[i][0]
+			    sumY += Points[i][1]
+			    sumXY += Points[i][0] * Points[i][1]
+			    sumXSq += Points[i][0] * Points[i][0]
+			  }
+			
+			  m = ((sumXY - sumX * sumY / N) ) / (sumXSq - sumX * sumX / N)
+			  b = sumY / N - m * sumX / N
+			  return [m*multi,b*multi];
+			}
 		}
 	}
 	
