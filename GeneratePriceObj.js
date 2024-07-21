@@ -49,7 +49,11 @@ function GeneratePriceObj(){
 		async function RY2(a,b){
 			var ps=0;
 			var mk=marplace.T[b];
-			var p=[ProductConfig[a].maxPrice[mk]||ProductConfig[a].defaultPrices[mk]*2,ProductConfig[a].minPrice[mk]||ProductConfig[a].defaultPrices[mk]];
+			var p=[
+				ProductConfig[a].maxPrice[mk]||ProductConfig[a].defaultPrices[mk]*2,
+				ProductConfig[a].minPrice[mk]||ProductConfig[a].defaultPrices[mk]
+			      ];
+			p.push((p[0]+p[1])/2);
 			p.map(e=>e*1e3);
 			var r=[];
 			var X=0,Y=0,A=0,B=0;
