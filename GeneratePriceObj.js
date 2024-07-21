@@ -11,6 +11,7 @@ function GeneratePriceObj(){
 		for (var i in ProductConfig){
 			let v=ProductConfig[i];
 			Price[i]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||0});
+			break
 		}
 		Str();
 	}
