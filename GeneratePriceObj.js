@@ -10,7 +10,7 @@ function GeneratePriceObj(){
 		ProductConfig=await ProductConfig();
 		for (let type in ProductConfig){
 			let v=ProductConfig[type];
-			Price[type]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||0});
+			Price[type]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||null});
 		}
 		Str();
 	}
@@ -50,7 +50,7 @@ function GeneratePriceObj(){
 				ProductConfig[a].maxPrice[mk]||ProductConfig[a].defaultPrices[mk]*2,
 				ProductConfig[a].minPrice[mk]||ProductConfig[a].defaultPrices[mk]
 			      ];
-            let split=1;
+           		let split=1;
 			for (let count=0;count<split;count++) p.push((count+1)*(p[0]+p[1])/split);
 			var r=[];
 			var X=0,Y=0,A=0,B=0;
@@ -108,7 +108,7 @@ function GeneratePriceObj(){
 	}
 	
 	function HP(p){
-		return JSON.stringify(p, undefined, 1).replaceAll(/[\n]*\s*?([\d\.]+[,]*)[\n]*\s+/g,"$1 ")
+		return JSON.stringify(p, undefined, 1).replaceAll(/[\n]*\s*?([\d\.]+[,]*|null[,]*)[\n]*\s+/g,"$1 ")
 		.replaceAll(/\n([^{}])/g,"\n\t\t$1").replaceAll(/\n(})/g,"\n\t$1").replaceAll(/\s(\])/g,"$1").replaceAll(/],/g,"], ");
 	}
 	
