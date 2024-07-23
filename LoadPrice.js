@@ -70,12 +70,13 @@ async function LoadPrice(){
 				 "POP_SOCKET": [11.72, 9.68, 10.34, 12.29, 12.28, 11.86, null], 
 				 "TANK_TOP": [15.27, 13.39, 14.24, 13.84, 13.84, 13.74, null]
 			}
-		},des=.99,desJP=00,
+		},des=[99,2],desJP=[00,0],
 		marplace={"US":["USD",0,1],"GB":["GBP",.2,1],"DE":["EUR",.19,1],"FR":["EUR",.2,1],"IT":["EUR",.22,1],"ES":["EUR",.21,1],"JP":["JPY", .1,200]};
 		marplace.T=Object.keys(marplace);
 		var history = {};
 		this.mc = mc;
 		this.GetPrice = GetPrice;
+		this.Prsi=Prsi;
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
 		this.GP = GP;
@@ -107,6 +108,14 @@ async function LoadPrice(){
 		}
 		function F(n,i=1){return Math.floor(n*i)/i;}
 		function R(n,i=1){return Math.round(n*i)/i;}
+		function C(n,i=1){return Math.ceil(n*i)/i;}
+		function toDes(min,ext,lastExt,countExt=2){
+			let lastInt=1/10**lastExt,
+				r=R(min,lastInt),
+				firstInt=lastInt*10**countExt,
+				r2=F(r,1/firstInt)+ext*lastInt;
+			return r2>=min?r2:r2+firstInt;
+		}
 		function Ry(a,b,p){ 
 			var r;
 			let M=marplace.T[b];
@@ -117,19 +126,18 @@ async function LoadPrice(){
 			let min=PriceObj.Min[a][b];
 			if (!div) return 0;
 			r=(zero+Mk[2]*p*div);
-			return Prsi(r);
-			function Prsi(r){
-				if (M=="JP"){
-					r=R(r,1e-2);
-					r=R(F(F(r-desJP-1,1),1e-2)+Mk[2]+desJP+(!p?Mk[2]:0),1);
-				}else{
-					r=R(r,100);
-					r=R(F(F(r-des-0.01,100),1)+Mk[2]+des+(!p?Mk[2]:0),100);
-				}
-				if (r<min) return Prsi(min);
-				if (r>max) return Prsi(max-(M=="JP"?100:1));
-				return r;
-			}
+			return r;
+		}
+		function Prsi(price,productType,marketId,overrideDes=null){
+			let max=PriceObj.Max[productType][marketId];
+			let min=PriceObj.Min[productType][marketId];
+			let M=marplace.T[marketId];
+			let desi=(M=="JP"?desJP:des);
+			if (overrideDes) desi=overrideDes;
+			r=toDes(price,desi[0],desi[1]);
+			if (r<min) return Prsi(min,productType,marketId);
+			if (r>max) return Prsi(max-(M=="JP"?100:1),productType,marketId);
+			return r;
 		}
 		function GP(p){
 			if (Price[p]==undefined){
@@ -141,6 +149,7 @@ async function LoadPrice(){
 				if (!marplace.T) marplace.T=Object.keys(marplace);
 				if (!marplace.P) marplace.P=Object.keys(PriceObj.Zero);
 				//--------------------------------------------
+				PriceR[u]=JSON.parse(JSON.stringify(PriceObj.Zero));
 				Price[u]=JSON.parse(JSON.stringify(PriceObj.Zero));
 				for (var JC=0;JC<marplace.P.length;JC++){
 					Id=marplace.P[JC];
@@ -150,8 +159,11 @@ async function LoadPrice(){
 						RY(Id,i,u);
 					}
 				}
-				function RY(a,b,u){
-					Price[u][a][b]=Ry(a,b,u);
+				function RY(productType,marketId,u){
+					let M=marplace.T[b];
+					let price=Ry(productType,marketId,u);
+					PriceR[u][productType][marketId]=price;
+					Price[u][productType][marketId]=Prsi(price,productType,marketId);
 					G+=1;
 					if (G==To&&FT) console.log("Price:"+u+", "+G+"/"+To);
 				}
