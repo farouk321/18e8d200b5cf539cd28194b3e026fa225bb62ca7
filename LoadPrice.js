@@ -5,6 +5,7 @@ async function LoadPrice(){
 	return (this.LoadPriceU)||(this.LoadPriceU=new LoadN());
 	function LoadN(){
 		var Price={},
+		PriceR={},
 		PriceObj = {
 			"Div": {
 				 "PHONE_CASE_APPLE_IPHONE": [1.436, 7.995, 7.932, 7.995, 8.135, 8.064, 1.4], 
@@ -76,6 +77,7 @@ async function LoadPrice(){
 		var history = {};
 		this.mc = mc;
 		this.GetPrice = GetPrice;
+		this.GetPriceR = GetPriceR;
 		this.Prsi=Prsi;
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
@@ -83,10 +85,10 @@ async function LoadPrice(){
 		this.history = history;
 		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
 		var AlgoPrice=[];
-		
-		function mc(n){
+		function mc(n,idToMk=false){
 			if (!marplace.T) marplace.T=Object.keys(marplace);
-			return marplace.T.indexOf(n)+1;
+			if (idToMk) return marplace.T[n];
+			return marplace.T.indexOf(n);
 		}
 		function DefPriceA(d){
 			DefPrice=d;
@@ -95,7 +97,7 @@ async function LoadPrice(){
 			AlgoPrice.push([t,p]);
 		}
 		function PriceAlgo(asin,market,type){
-			var marketId=mc(market)-1;
+			var marketId=mc(market);
 			var P=eval(DefPrice[market]);
 			for (var al of AlgoPrice) if (eval(al[0])) P=eval(al[1]);
 			P=Number(P);
@@ -104,14 +106,21 @@ async function LoadPrice(){
 			return P;
 		}
 		function GetPrice(asin,market,type){
-			return GP(PriceAlgo(asin,market,type))[type][mc(market)-1];
+			let R=PriceAlgo(asin,market,type);
+			GP(R);
+			return Price[R][type][mc(market)]
+		}
+		function GetPriceR(asin,market,type){
+			let R=PriceAlgo(asin,market,type);
+			GP(R);
+			return PriceR[R][type][mc(market)]
 		}
 		function F(n,i=1){return Math.floor(n*i)/i;}
 		function R(n,i=1){return Math.round(n*i)/i;}
 		function C(n,i=1){return Math.ceil(n*i)/i;}
 		function toDes(min,ext,lastExt,countExt=2){
 			let lastInt=1/10**lastExt,
-				r=R(min,lastInt),
+				r=R(min,1/lastInt),
 				firstInt=lastInt*10**countExt,
 				r2=F(r,1/firstInt)+ext*lastInt;
 			return r2>=min?r2:r2+firstInt;
@@ -128,12 +137,14 @@ async function LoadPrice(){
 			r=(zero+Mk[2]*p*div);
 			return r;
 		}
-		function Prsi(price,productType,marketId,overrideDes=null){
+		function Prsi(price,productType,marketId,overrideExt=null){
 			let max=PriceObj.Max[productType][marketId];
 			let min=PriceObj.Min[productType][marketId];
+			let div=PriceObj.Div[productType][marketId];
+			if (!div) return price;
 			let M=marplace.T[marketId];
 			let desi=(M=="JP"?desJP:des);
-			if (overrideDes) desi=overrideDes;
+			if (overrideExt) desi[0]=overrideExt;
 			r=toDes(price,desi[0],desi[1]);
 			if (r<min) return Prsi(min,productType,marketId);
 			if (r>max) return Prsi(max-(M=="JP"?100:1),productType,marketId);
@@ -155,14 +166,15 @@ async function LoadPrice(){
 					Id=marplace.P[JC];
 					To+=PriceObj.Zero[Id].length;
 					if (JC==marplace.P.length-1) FT=1;
-					for (var i=0;i<PriceObj.Zero[Id].length;i++){
-						RY(Id,i,u);
+					for (var marketId=0;marketId<PriceObj.Zero[Id].length;marketId++){
+						RY(Id,marketId,u);
 					}
 				}
 				function RY(productType,marketId,u){
-					let M=marplace.T[b];
+					let M=marplace.T[marketId];
 					let price=Ry(productType,marketId,u);
-					PriceR[u][productType][marketId]=price;
+					let desi=(M=="JP"?desJP:des);
+					PriceR[u][productType][marketId]=R(price,10**desi[1]);
 					Price[u][productType][marketId]=Prsi(price,productType,marketId);
 					G+=1;
 					if (G==To&&FT) console.log("Price:"+u+", "+G+"/"+To);
