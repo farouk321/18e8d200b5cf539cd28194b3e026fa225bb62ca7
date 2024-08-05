@@ -105,10 +105,16 @@ async function LoadPrice(){
 			history[P]=(history[P]||0)+1
 			return P;
 		}
-		function GetPrice(asin,market,type){
+		function GetPrice(asin,market,type,des=null){
 			let R=PriceAlgo(asin,market,type);
+			let marketId=mc(market);
 			GP(R);
-			return Price[R][type][mc(market)]
+			if (des==null){
+				R=Price[R][type][marketId];
+			}else{
+				R=Prsi(PriceR[R][type][marketId],type,marketId,des);
+			}
+			return R;
 		}
 		function GetPriceR(asin,market,type){
 			let R=PriceAlgo(asin,market,type);
