@@ -14,6 +14,9 @@ function GeneratePriceObj(){
 		}
 		Str();
 	}
+	function C(n,i=1){
+		return Math.ceil(n*i)/i;
+	}
 	function F(n,i=1){
 		return Math.floor(n*i)/i;
 	}
@@ -58,10 +61,10 @@ function GeneratePriceObj(){
 				r[i]=[await Ry(a, p[i], marplace.T[b]),p[i]]
 			}
 			var M=Mean(r);
-			PriceObj.Div[a][b]=F(M[0],1e3);
-			PriceObj.Zero[a][b]=F(M[1],1e2);
-			PriceObj.Max[a][b]=F(ProductConfig[a].maxPrice[mk]||1e6,1e2);
-			PriceObj.Min[a][b]=Math.max(F(ProductConfig[a].minPrice[mk]||0,1e2),PriceObj.Zero[a][b]);
+			PriceObj.Div[a][b]=C(M[0],1e3);
+			PriceObj.Zero[a][b]=C(M[1],1e2);
+			PriceObj.Max[a][b]=R(ProductConfig[a].maxPrice[mk]||1e6,1e2);
+			PriceObj.Min[a][b]=Math.max(R(ProductConfig[a].minPrice[mk]||0,1e2),PriceObj.Zero[a][b]);
 			Fr+=1;
 			if (!(Fr%10)||Fr==To)console.log("Price:"+Fr+"/"+To);
 			if (FT&&Fr==To) (Print());
