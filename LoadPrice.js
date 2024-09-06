@@ -74,7 +74,6 @@ async function LoadPrice(){
 		},des=[99,2],desJP=[00,0],
 		marplace={"US":["USD",0,1],"GB":["GBP",.2,1],"DE":["EUR",.19,1],"FR":["EUR",.2,1],"IT":["EUR",.22,1],"ES":["EUR",.21,1],"JP":["JPY", .1,200]};
 		marplace.T=Object.keys(marplace);
-		var history = {};
 		this.mc = mc;
 		this.GetPrice = GetPrice;
 		this.MGetPrice = MGetPrice;
@@ -84,7 +83,6 @@ async function LoadPrice(){
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
 		this.GP = GP;
-		this.history = history;
 		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
 		var AlgoPrice=[];
 		function mc(n,idToMk=false){
@@ -103,14 +101,11 @@ async function LoadPrice(){
 			var obj={asin:asin,market:market,type:type}
 			var P=eDefPrice[market](obj);
 			for (var al of AlgoPrice) if (al[0](obj)) P=al[1](obj);
-			P=Number(P);
-			if (isNaN(P)||P<0) P=0;
-			history[P]=(history[P]||0)+1
 			return P;
 		}
-		function GetPrice(asin,market,type,des=null){
+		function GetPrice(asin,market,type){
 			let R=PriceAlgo(asin,market,type);
-			return MGetPrice(R,market,type,des);
+			return MGetPrice(R[0],market,type,R[1]);
 		}
 		function MGetPrice(R,market,type,des=null){
 			let marketId=mc(market);
@@ -124,7 +119,7 @@ async function LoadPrice(){
 		}
 		function GetPriceR(asin,market,type){
 			let R=PriceAlgo(asin,market,type);
-			return MGetPriceR(R,market,type)
+			return MGetPriceR(R[0],market,type)
 		}
 		function MGetPriceR(R,market,type){
 			GP(R);
