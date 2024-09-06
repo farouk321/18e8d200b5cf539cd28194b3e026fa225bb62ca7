@@ -158,7 +158,7 @@ async function LoadPrice(){
 			if (!div) return price;
 			let M=marplace.T[marketId];
 			let desi=(M=="JP"?desJP:des);
-			if (overrideExt) desi[0]=overrideExt;
+			if (overrideExt!=null) desi[0]=overrideExt;
 			r=toDes(price,desi[0],desi[1]);
 			if (r<min) return Prsi(min,productType,marketId);
 			if (r>max) return Prsi(max-(M=="JP"?100:1),productType,marketId);
