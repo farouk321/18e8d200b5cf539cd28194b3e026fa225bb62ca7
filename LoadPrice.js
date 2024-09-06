@@ -99,7 +99,7 @@ async function LoadPrice(){
 		function PriceAlgo(asin,market,type){
 			var marketId=mc(market);
 			var obj={asin:asin,market:market,type:type}
-			var P=eDefPrice[market](obj);
+			var P=DefPrice[market](obj);
 			for (var al of AlgoPrice) if (al[0](obj)) P=al[1](obj);
 			return P;
 		}
