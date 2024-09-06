@@ -77,7 +77,9 @@ async function LoadPrice(){
 		var history = {};
 		this.mc = mc;
 		this.GetPrice = GetPrice;
+		this.MGetPrice = MGetPrice;
 		this.GetPriceR = GetPriceR;
+		this.MGetPriceR = MGetPriceR;
 		this.Prsi=Prsi;
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
@@ -107,6 +109,9 @@ async function LoadPrice(){
 		}
 		function GetPrice(asin,market,type,des=null){
 			let R=PriceAlgo(asin,market,type);
+			return MGetPrice(R,asin,market,type,des);
+		}
+		function MGetPrice(R,asin,market,type,des=null){
 			let marketId=mc(market);
 			GP(R);
 			if (des==null){
@@ -118,6 +123,9 @@ async function LoadPrice(){
 		}
 		function GetPriceR(asin,market,type){
 			let R=PriceAlgo(asin,market,type);
+			return MGetPriceR(R,asin,market,type)
+		}
+		function MGetPriceR(R,asin,market,type){
 			GP(R);
 			return PriceR[R][type][mc(market)]
 		}
