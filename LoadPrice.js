@@ -83,7 +83,7 @@ async function LoadPrice(){
 		this.AlgoPriceA = AlgoPriceA;
 		this.DefPriceA = DefPriceA;
 		this.GP = GP;
-		var DefPrice={JP:3,ES:3,IT:3,FR:3,DE:3,GB:4,US:4.5};
+		var DefPrice={JP:()=>[3,null],ES:()=>[3,null],IT:()=>[3,null],FR:()=>[3,null],DE:()=>[3,null],GB:()=>[4,null],US:()=>[4.5,null]};
 		var AlgoPrice=[];
 		function mc(n,idToMk=false){
 			if (!marplace.T) marplace.T=Object.keys(marplace);
