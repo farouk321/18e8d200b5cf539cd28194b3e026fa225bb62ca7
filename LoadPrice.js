@@ -109,9 +109,9 @@ async function LoadPrice(){
 		}
 		function GetPrice(asin,market,type,des=null){
 			let R=PriceAlgo(asin,market,type);
-			return MGetPrice(R,asin,market,type,des);
+			return MGetPrice(R,market,type,des);
 		}
-		function MGetPrice(R,asin,market,type,des=null){
+		function MGetPrice(R,market,type,des=null){
 			let marketId=mc(market);
 			GP(R);
 			if (des==null){
@@ -123,9 +123,9 @@ async function LoadPrice(){
 		}
 		function GetPriceR(asin,market,type){
 			let R=PriceAlgo(asin,market,type);
-			return MGetPriceR(R,asin,market,type)
+			return MGetPriceR(R,market,type)
 		}
-		function MGetPriceR(R,asin,market,type){
+		function MGetPriceR(R,market,type){
 			GP(R);
 			return PriceR[R][type][mc(market)]
 		}
