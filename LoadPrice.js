@@ -74,6 +74,7 @@ async function LoadPrice(){
 		},des=[99,2],desJP=[00,0],
 		marplace={"US":["USD",0,1],"GB":["GBP",.2,1],"DE":["EUR",.19,1],"FR":["EUR",.2,1],"IT":["EUR",.22,1],"ES":["EUR",.21,1],"JP":["JPY", .1,200]};
 		marplace.T=Object.keys(marplace);
+		this.marplace = marplace;
 		this.PriceObj = PriceObj;
 		this.mc = mc;
 		this.GetPrice = GetPrice;
