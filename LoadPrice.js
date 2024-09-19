@@ -72,7 +72,7 @@ async function LoadPrice(){
                 }
             },
             marplace={"US":["USD",0,1],"GB":["GBP",.2,1],"DE":["EUR",.19,1],"FR":["EUR",.2,1],"IT":["EUR",.22,1],"ES":["EUR",.21,1],"JP":["JPY", .1,200]};
-        PriceObj=Object.assign(PriceObj,{"des":[99,2],"desJP":[0,0],"Def": ObjWithInfJson(),"Raw": ObjWithInfJson()})
+        PriceObj=Object.assign(PriceObj,{"dec":[99,2],"decJP":[0,0],"Def": ObjWithInfJson(),"Raw": ObjWithInfJson()})
         marplace.T=Object.keys(marplace);
         this.marplace = marplace;
         this.PriceObj = PriceObj;
@@ -104,27 +104,27 @@ async function LoadPrice(){
         }
         function GetPrice(asin,market,type){
             let R=PriceAlgo(asin,market,type);
-            return MGetPrice({value:R[0],des:R[1],isInc:R[2]},market,type);
+            return MGetPrice({value:R[0],dec:R[1],isInc:R[2]},market,type);
         }
-        function MGetPrice({value,des,isInc,isRaw},market,type){
+        function MGetPrice({value,dec,isInc,isRaw},market,type){
             let marketId=mc(market),mode=isInc?"Inc":"Roy";
             GP({value,mode});
             if (isRaw) return PriceObj.Raw[mode][value][type][mc(market)];
-            return des!=null?Prsi(PriceObj.Raw[mode][value][type][marketId],type,marketId,des):PriceObj.Def[mode][value][type][marketId];
+            return dec!=null?Prsi(PriceObj.Raw[mode][value][type][marketId],type,marketId,dec):PriceObj.Def[mode][value][type][marketId];
         }
-        function Prsi(price,productType,marketId,des=null){
+        function Prsi(price,productType,marketId,dec=null){
             let max=PriceObj.Max[productType][marketId];
             let min=PriceObj.Min[productType][marketId];
             let div=PriceObj.Div[productType][marketId];
             if (!div) return price;
             let M=marplace.T[marketId];
-            let desi=[].concat((M=="JP"?PriceObj.desJP:PriceObj.des));
-            if (des!=null) desi[0]=des;
-            let r=toDes(price,desi[0],desi[1]);
-            if (r<min) return Prsi(min,productType,marketId,des);
-            if (r>max) return Prsi(max-(M=="JP"?100:1),productType,marketId,des);
+            let deci=[].concat((M=="JP"?PriceObj.decJP:PriceObj.dec));
+            if (dec!=null) deci[0]=dec;
+            let r=toDec(price,deci[0],deci[1]);
+            if (r<min) return Prsi(min,productType,marketId,dec);
+            if (r>max) return Prsi(max-(M=="JP"?100:1),productType,marketId,dec);
             return r;
-            function toDes(min,ext,lastExt,countExt=2){
+            function toDec(min,ext,lastExt,countExt=2){
                 let lastInt=1/10**lastExt,
                     r=R(min,1/lastInt),
                     firstInt=lastInt*10**countExt,
@@ -154,9 +154,9 @@ async function LoadPrice(){
                 function RY(value,productType,marketId){
                     let M=marplace.T[marketId];
                     let price=PriceFrom(value,productType,marketId,mode);
-                    let desi=[].concat((M=="JP"?PriceObj.desJP:PriceObj.des));
-                    PriceR[value][productType][marketId]=R(price,10**desi[1]);
-                    Price[value][productType][marketId]=Prsi(price,productType,marketId,desi[0]);
+                    let deci=[].concat((M=="JP"?PriceObj.decJP:PriceObj.dec));
+                    PriceR[value][productType][marketId]=R(price,10**deci[1]);
+                    Price[value][productType][marketId]=Prsi(price,productType,marketId,deci[0]);
                     G+=1;
                     if (G==To&&FT) console.log("Price:"+value+", "+G+"/"+To);
                     function PriceFrom(value,productType,marketId,mode="Roy"){
