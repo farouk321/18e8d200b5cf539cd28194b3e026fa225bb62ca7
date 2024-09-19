@@ -104,7 +104,7 @@ async function LoadPrice(){
         }
         function GetPrice(asin,market,type){
             let R=PriceAlgo(asin,market,type);
-            return MGetPrice({value:R[0],des:R[1],isInc:!!R[2]},market,type);
+            return MGetPrice({value:R[0],des:R[1],isInc:R[2]},market,type);
         }
         function MGetPrice({value,des,isInc,isRaw},market,type){
             let marketId=mc(market),mode=isInc?"Inc":"Roy";
