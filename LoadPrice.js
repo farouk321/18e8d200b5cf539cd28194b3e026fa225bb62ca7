@@ -153,8 +153,8 @@ async function LoadPrice(){
                 }
                 function RY(value,productType,marketId){
                     let M=marplace.T[marketId];
-                    let price=PriceFrom(value,productType,marketId,mode);
                     let deci=[].concat((M=="JP"?PriceObj.decJP:PriceObj.dec));
+                    let price=PriceFrom(value,productType,marketId,mode);
                     PriceR[value][productType][marketId]=R(price,10**deci[1]);
                     Price[value][productType][marketId]=Prsi(price,productType,marketId,deci[0]);
                     G+=1;
