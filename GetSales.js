@@ -179,6 +179,7 @@ function GetS(end=30,callback=null,start=0){
                 for (var i2 in Sale[i]){
                     if (!v.S[Sale[i][i2][0].asin]){
                         v.S[Sale[i][i2][0].asin] = Sale[i][i2][0].unitsSold - Sale[i][i2][0].unitsCancelled;
+                        Sale[i][i2][0].market=mart[Sale[i][i2][0].marketplaceId];
                         if (Relation[Sale[i][i2][0].productType]) Sale[i][i2][0].productType=Relation[Sale[i][i2][0].productType];
                         v.SFull[Sale[i][i2][0].asin] = Sale[i][i2][0];
                         v.SFull[Sale[i][i2][0].asin].salesAggregateForVariations
@@ -191,7 +192,13 @@ function GetS(end=30,callback=null,start=0){
                         obj.royalties.value+=Sale[i][i2][0].royalties.value;
                         obj.salesAggregateForVariations
                             .push(...Sale[i][i2][0].salesAggregateForVariations
-                                  .map(e=>{e.units=e.unitsSold-e.unitsCancelled;e.price=e.units?e.revenue.value/e.units:0;if (Relation[e.productType]) e.productType=Relation[e.productType];return e;}));
+                                  .map(e=>{
+                                      e.units=e.unitsSold-e.unitsCancelled;
+                                      e.price=e.units?e.revenue.value/e.units:0;
+                                      e.market=mart[e.marketplaceId];
+                                      if (Relation[e.productType]) e.productType=Relation[e.productType];
+                                      return e;
+                                  }));
                         obj.unitsCancelled+=Sale[i][i2][0].unitsCancelled;
                         obj.unitsReturned+=Sale[i][i2][0].unitsReturned;
                         obj.unitsSold+=Sale[i][i2][0].unitsSold;
