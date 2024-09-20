@@ -86,6 +86,10 @@ class Time{
 }
 function GetS(end=30,callback=null,start=0){
     let ostart=start
+    let Relation={
+        HOUSE_BRAND: "STANDARD_TSHIRT",
+        PREMIUM_BRAND: "PREMIUM_TSHIRT"
+    };
     if (!this.S) this.S={};
     let S=this.S;
     if (!this.SFull) this.SFull={};
@@ -175,9 +179,10 @@ function GetS(end=30,callback=null,start=0){
                 for (var i2 in Sale[i]){
                     if (!v.S[Sale[i][i2][0].asin]){
                         v.S[Sale[i][i2][0].asin] = Sale[i][i2][0].unitsSold - Sale[i][i2][0].unitsCancelled;
+                        if (Relation[Sale[i][i2][0].productType]) Sale[i][i2][0].productType=Relation[Sale[i][i2][0].productType];
                         v.SFull[Sale[i][i2][0].asin] = Sale[i][i2][0];
                         v.SFull[Sale[i][i2][0].asin].salesAggregateForVariations
-                            .map(e=>{e.units=e.unitsSold-e.unitsCancelled;e.price=e.units?e.revenue.value/e.units:0;return e;});
+                            .map(e=>{e.units=e.unitsSold-e.unitsCancelled;e.price=e.units?e.revenue.value/e.units:0;if (Relation[e.productType]) e.productType=Relation[e.productType];return e;});
                     }else{
                         v.S[Sale[i][i2][0].asin] += Sale[i][i2][0].unitsSold - Sale[i][i2][0].unitsCancelled;
                         let obj=v.SFull[Sale[i][i2][0].asin]
@@ -186,7 +191,7 @@ function GetS(end=30,callback=null,start=0){
                         obj.royalties.value+=Sale[i][i2][0].royalties.value;
                         obj.salesAggregateForVariations
                             .push(...Sale[i][i2][0].salesAggregateForVariations
-                                  .map(e=>{e.units=e.unitsSold-e.unitsCancelled;e.price=e.units?e.revenue.value/e.units:0;return e;}));
+                                  .map(e=>{e.units=e.unitsSold-e.unitsCancelled;e.price=e.units?e.revenue.value/e.units:0;if (Relation[e.productType]) e.productType=Relation[e.productType];return e;}));
                         obj.unitsCancelled+=Sale[i][i2][0].unitsCancelled;
                         obj.unitsReturned+=Sale[i][i2][0].unitsReturned;
                         obj.unitsSold+=Sale[i][i2][0].unitsSold;
