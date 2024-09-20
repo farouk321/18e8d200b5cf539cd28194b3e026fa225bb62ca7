@@ -171,7 +171,7 @@ async function LoadPrice(){
                         if (mode=="Roy"){
                             r=(Mk[2]*value*div+zero);
                         }else if (mode=="Inc"){
-                            r=((10**deci[1])*value+zero);
+                            r=((M=="JP"?100:1)*value+zero);
                         }else{throw 0}
                         if (r<min) r=min;
                         if (r>max) r=max;
