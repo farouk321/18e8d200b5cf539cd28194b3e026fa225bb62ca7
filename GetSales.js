@@ -183,7 +183,13 @@ function GetS(end=30,callback=null,start=0){
                         if (Relation[Sale[i][i2][0].productType]) Sale[i][i2][0].productType=Relation[Sale[i][i2][0].productType];
                         v.SFull[Sale[i][i2][0].asin] = Sale[i][i2][0];
                         v.SFull[Sale[i][i2][0].asin].salesAggregateForVariations
-                            .map(e=>{e.units=e.unitsSold-e.unitsCancelled;e.price=e.units?e.revenue.value/e.units:0;if (Relation[e.productType]) e.productType=Relation[e.productType];return e;});
+                            .map(e=>{
+                                e.units=e.unitsSold-e.unitsCancelled;
+                                e.price=e.units?e.revenue.value/e.units:0;
+                                e.market=mart[e.marketplaceId];
+                                if (Relation[e.productType]) e.productType=Relation[e.productType];
+                                return e;
+                            });
                     }else{
                         v.S[Sale[i][i2][0].asin] += Sale[i][i2][0].unitsSold - Sale[i][i2][0].unitsCancelled;
                         let obj=v.SFull[Sale[i][i2][0].asin]
