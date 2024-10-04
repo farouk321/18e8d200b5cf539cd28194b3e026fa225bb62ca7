@@ -1,7 +1,7 @@
 //-----------------LoadPrice-----------------//
 async function LoadPrice(){
     await Login();
-    await GetS(365);
+    //await GetS(365);
     return this.LPrice||(this.LPrice=new LoadN());
     function LoadN(){
         var PriceObj =
