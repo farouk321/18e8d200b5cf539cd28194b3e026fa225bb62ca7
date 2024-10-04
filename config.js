@@ -1,4 +1,5 @@
 requirejs.config({
+	waitSeconds: 200,
 	paths: {
 	 "FindDesign": "./FindDesign",
 	 "FindListing": "./FindListing",
