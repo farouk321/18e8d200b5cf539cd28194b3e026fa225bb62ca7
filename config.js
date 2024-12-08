@@ -1,11 +1,12 @@
 requirejs.config({
 	waitSeconds: 200,
 	paths: {
-	 "FindDesign": "./FindDesign",
-	 "FindListing": "./FindListing",
-	 "DesignDetails": "./DesignDetails",
+	 "InitMerch": "./InitMerch",
+	 "FindDesigns": "./FindDesigns",
+	 "FindProducts": "./FindProducts",
 	 "GetDesign": "./GetDesign",
 	 "GeneratePriceObj": "./GeneratePriceObj",
+	 "GetProductConfig": "./GetProductConfig",
 	 "LoadPrice": "./LoadPrice",
 	 "RXhrJSON": "./RXhrJSON",
 	 "GetSales": "./GetSales",
@@ -14,7 +15,7 @@ requirejs.config({
 	 "Sleep": "./Sleep",
 	},
 	shim: {
-		"FindDesign": {
+		"FindDesigns": {
 			deps: [],
 		},
 		"FindListing": {
@@ -24,7 +25,7 @@ requirejs.config({
 			deps: [],
 		},
 		"GeneratePriceObj": {
-			deps: [],
+			deps: ["GetProductConfig"],
 		},
 		"LoadPrice": {
 			deps: ["GetSales"],
@@ -32,6 +33,9 @@ requirejs.config({
 		"GetSales": {
 			deps: [],
 		},
+		"InitMerch": {
+			deps: ["RXhrJSON","groupBy","Sleep","Login","GetProductConfig","GeneratePriceObj"],
+		},
 	}
 });
-requirejs.LoadPromise=new Promise((r,f)=>requirejs(["RXhrJSON","Login","groupBy","Sleep"],r))
+requirejs.LoadPromise=new Promise((r,f)=>requirejs(["InitMerch"],r))
