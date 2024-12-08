@@ -1,5 +1,5 @@
-//-----------------FindListing-----------------//
-async function FindListing(call,O={}){
+//-----------------FindProducts-----------------//
+async function FindProducts(call,O={}){
     groupBy();
     await Login();
     let status=Def("status",["TRANSLATING", "REVIEW", "PUBLISHING", "DELETING","DRAFT","PUBLISHED","TIMED_OUT","PROPAGATED"]),
