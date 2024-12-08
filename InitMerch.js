@@ -1,0 +1,3 @@
+//-----------------InitMerch-----------------//
+async function InitMerch(){
+}
