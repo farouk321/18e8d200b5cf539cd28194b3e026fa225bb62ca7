@@ -7,7 +7,7 @@ function GeneratePriceObj(){
 	async function Start({U,U2}) {
 		User = U;
 		User2 = U2;
-		ProductConfig=await ProductConfig();
+		ProductConfig=await GetProductConfig();
 		for (let type in ProductConfig){
 			let v=ProductConfig[type];
 			Price[type]=Object.keys(marplace).map(function(m){return v.marketplaces.includes(m)&&1||null});
@@ -88,17 +88,6 @@ function GeneratePriceObj(){
 			  return [m*multi,b*multi];
 			}
 		}
-	}
-	
-	async function ProductConfig() {
-		var url = 'https://merch.amazon.com/api/ng-amazon/coral/com.amazon.merch.sellerdesignservice.MerchSellerDesignService/GetProductTypeConfiguration';
-		var post = {
-			"actingAsId": User,
-			"userId": User,
-			"accountId": User2,
-			"__type": "com.amazon.merch.sellerdesignservice#GetProductTypeConfigurationInput",
-		};
-		return RXhrJSONP("POST",url,post,{count:2,timeout:3e3}).then(e=>e.productTypeConfiguration)
 	}
 	
 	function Print(){
